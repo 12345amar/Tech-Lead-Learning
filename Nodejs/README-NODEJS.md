@@ -10,6 +10,7 @@
 const http = require('http')
 function reListener(req, res) {
   console.log(req)
+  process.exit()
 }
 const server = http.createServer(reListener);
 server.listen(3000)
@@ -19,5 +20,8 @@ server.listen(3000)
 - requestListener has infomartion who send the request
 - responseListener send back the info who send the request
 - server.listen(3000):  this is server to manage the port for local but on production it can take default port
+- process.exit(): The process.exit() method is used in Node.js to terminate the current Node.js process synchronously with a specified exit code.
+- process.exit(0): 0 (default): Means success.
+- process.exit(1): Exit on error (1,2 or any other non-zero value indicate errors)
 
 
