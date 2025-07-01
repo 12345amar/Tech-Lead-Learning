@@ -26,12 +26,21 @@ server.listen(3000)
 - It accepts a callback function with two arguments:
 - req (IncomingMessage) — Represents the HTTP request → the incoming request from the client (browser, Postman, curl, etc.)
 - res (ServerResponse) — Represents the HTTP response → the server’s response object you use to send data back.
-**req is an instance of http.IncomingMessage**
+**req is an instance of http.IncomingMessage class**
 ```node.jsconsole.log(req)```
 - This logs the entire req object, which includes:
 - req.method — HTTP method (e.g., GET, POST)
 - req.url — The URL being requested
 - req.headers — The headers sent by the client
+
+**example:**
+  ```node.js
+  console.log(req.method);     // e.g., "GET", "POST"
+  console.log(req.url);        // e.g., "/api/users?name=amar"
+  console.log(req.headers);    // object with request headers
+  console.log(req.httpVersion); // e.g., "1.1"
+```
+
 
 | Property          | Description                                                               |
 | ----------------- | ------------------------------------------------------------------------- |
@@ -48,6 +57,34 @@ server.listen(3000)
 | `req.body`        | Not available by default — must be parsed manually or with middleware     |
 | `req.aborted`     | Boolean — true if the request was aborted by the client                   |
 | `req.complete`    | Boolean — true if the entire request has been received                    |
+
+
+**res object is an instance of the http.ServerResponse class**
+- Set status codes
+- Set headers
+- Send data (string, buffer, stream)
+- End the response
+
+**example:**
+```node.js
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.write('Hello, ');
+  res.write('World!');
+  res.end(); // required to complete response
+```
+| Method / Property                    | Description                                                           |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| `res.writeHead(statusCode, headers)` | Sets the HTTP status code and response headers                        |
+| `res.statusCode`                     | Manually set or access the status code (default is 200)               |
+| `res.setHeader(name, value)`         | Set a single response header                                          |
+| `res.getHeader(name)`                | Get a specific response header value                                  |
+| `res.removeHeader(name)`             | Remove a header from the response                                     |
+| `res.write(data)`                    | Write data to the response body (can be called multiple times)        |
+| `res.end([data])`                    | Signals that the response is complete; can optionally send final data |
+| `res.writeContinue()`                | Sends a 100 Continue response (rarely needed manually)                |
+| `res.statusMessage`                  | Customize status text (default is "OK" for 200)                       |
+| `res.headersSent`                    | Boolean indicating if headers have already been sent                  |
 
 
 
