@@ -58,7 +58,7 @@ server.listen(3000)
 | `req.aborted`     | Boolean — true if the request was aborted by the client                   |
 | `req.complete`    | Boolean — true if the entire request has been received                    |
 
-
+----
 **res object is an instance of the http.ServerResponse class**
 - Set status codes
 - Set headers
@@ -85,6 +85,45 @@ server.listen(3000)
 | `res.writeContinue()`                | Sends a 100 Continue response (rarely needed manually)                |
 | `res.statusMessage`                  | Customize status text (default is "OK" for 200)                       |
 | `res.headersSent`                    | Boolean indicating if headers have already been sent                  |
+
+----
+
+## Program Lifecyly and Event Loop in NodeJS ##
+**Initialization:**
+- Node sets up the environment, including the V8 engine, libuv (which manages I/O and the thread pool), and internal modules.
+**Global Code Execution:**
+- Node runs the top-level code synchronously, line by line.
+- It registers async operations like setTimeout, fs.readFile, http.get, etc., with the libuv API.
+**Task Registration:**
+- Async tasks are handed off to the system kernel or libuv thread pool and executed in the background.
+**Event Loop Start:**
+- Once the sync code finishes, Node enters the event loop and continuously checks for any completed async tasks and their associated callbacks.
+**Example:**
+```Nodejs
+console.log("Start");
+setTimeout(() => console.log("Timeout"), 0);
+setImmediate(() => console.log("Immediate"));
+Promise.resolve().then(() => console.log("Promise"));
+process.nextTick(() => console.log("NextTick"));
+console.log("End");
+```
+**Output:**
+- Start
+- End
+- NextTick
+- Promise
+- Immediate / Timeout (order may vary slightly)
+**Explain:**
+- process.nextTick() runs before any microtask or timer.
+- Promise.then() is a microtask.
+- setTimeout and setImmediate are in separate event loop phases.
+*- setTimeout: setTimeout is used to schedule a function to run after a minimum delay.*
+*- setImmediate: setImmediate is used to execute a function immediately after the current event loop phase, before any I/O events and after the current script completes.*
+
+## Asyncronous Code ##
+## Request and Response with Stream & Buffer ##
+## Nodejs Core Modules ##
+## The Node Module System ##
 
 
 
