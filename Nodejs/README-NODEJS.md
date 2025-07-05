@@ -98,6 +98,7 @@ server.listen(3000)
 - Async tasks are handed off to the system kernel or libuv thread pool and executed in the background.
 **Event Loop Start:**
 - Once the sync code finishes, Node enters the event loop and continuously checks for any completed async tasks and their associated callbacks.
+
 **Example:**
 ```Nodejs
 console.log("Start");
@@ -113,17 +114,57 @@ console.log("End");
 - NextTick
 - Promise
 - Immediate / Timeout (order may vary slightly)
+
 **Explain:**
 - process.nextTick() runs before any microtask or timer.
 - Promise.then() is a microtask.
 - setTimeout and setImmediate are in separate event loop phases.
-*- setTimeout: setTimeout is used to schedule a function to run after a minimum delay.*
-*- setImmediate: setImmediate is used to execute a function immediately after the current event loop phase, before any I/O events and after the current script completes.*
+- *setTimeout: setTimeout is used to schedule a function to run after a minimum delay.*
+- *setImmediate: setImmediate is used to execute a function immediately after the current event loop phase, before any I/O events and after the current script completes.*
 
-## Asyncronous Code ##
+----
+
+# 📦 Asynchronous Code in Node.js
+Node.js is single-threaded, but it's built for asynchronous, non-blocking operations. This allows Node to handle **I/O-heavy operations** like file access, database queries, and HTTP requests **without blocking the main thread**.
+
+## 🔄 What is Asynchronous Code?
+Asynchronous code enables the program to start a task and **move on without waiting** for it to finish. Once the task is complete, a callback is triggered to handle the result.
+
+## 🧠 Why Asynchronous?
+- Node.js runs on a **single thread**
+- Async operations are handled in the background by **libuv**
+- Helps build **high-performance** and **scalable** applications
+
+## ⚙️ How Asynchronous Code Works in Node.js
+1. Executes synchronous (top-level) code
+2. Sends async operations (I/O, timers, HTTP, etc.) to the **event loop**
+3. Once async tasks complete, **callbacks** are pushed to a queue
+4. Event loop processes these callbacks
+
+## 🔧 Asynchronous Patterns in Node.js
+### ✅ 1. Callback-Based
+
+```js
+const fs = require('fs');
+
+fs.readFile('file.txt', 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+
+
 ## Request and Response with Stream & Buffer ##
 ## Nodejs Core Modules ##
 ## The Node Module System ##
+
+
+
+
+## Useful resources:
+- Official Node.js Docs: https://nodejs.org/en/docs/guides/
+- Full Node.js Reference (for all core modules): https://nodejs.org/dist/latest/docs/api/
+- More about the Node.js Event Loop: https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
+- Blocking and Non-Blocking Code: https://nodejs.org/en/docs/guides/dont-block-the-event-loop/
 
 
 
