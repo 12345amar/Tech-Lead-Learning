@@ -180,7 +180,9 @@ function greet(user) {
 }
 greet(undefined); // ❌ Runtime Error: Cannot read property 'name' of undefined
 ```
-- Logical Errors
+- **Logical Errors**
+Logical Errors: When the code executes without throwing an explicit error but produces incorrect or unintended results due to flawed logic.
+----
 
 # 📘 Types of Errors in Node.js
 *Node.js handles different types of errors that developers may encounter during application runtime. Understanding these categories helps in better debugging, error handling, and writing resilient applications.*
@@ -195,11 +197,69 @@ fs.readFile('/invalid/path', (err, data) => {
     console.error("System Error:", err.code); // ENOENT
   }
 });
+```
 **Common system error codes:**
 - **ENOENT** – No such file or directory
 - **EACCES** – Permission denied
 - **ECONNREFUSED** – Connection refused
 - **ETIMEDOUT** – Operation timed out
+
+## 2. User-defined Errors
+*Errors thrown manually by developers when custom validation fails or conditions are unmet.*
+```nodejs
+function divide(a, b) {
+  if (b === 0) throw new Error("Cannot divide by zero");
+  return a / b;
+}
+```
+## 3. 🔄 Operational Errors
+*Expected runtime failures due to external factors like:*
+- Invalid input
+- Network failure
+- Database connection loss
+*These should be gracefully handled.*
+
+## 4. Programmer Errors
+*Bugs in code logic that should be fixed rather than caught.*
+**Example:**
+```Nodejs
+const user = undefined;
+console.log(user.name); // ❌ TypeError
+```
+## 5. 🔤 Syntax Errors
+*Mistakes in JavaScript syntax that prevent code from executing.*
+**Example:**
+```nodejs
+try {
+  eval('function() {}'); // SyntaxError
+} catch (err) {
+  console.error(err.name); // "SyntaxError"
+}
+```
+
+## 6. 🔣 Type Errors
+*Occurs when a value is used inappropriately.*
+**Example:**
+```nodejs
+const value = null;
+value.trim(); // ❌ TypeError: Cannot read properties of null
+```
+
+## 7. 🧾 Reference Errors
+*Occurs when trying to access an undefined variable.*
+**Example:**
+```nodejs
+console.log(undeclaredVar); // ❌ ReferenceError
+```
+
+## 8. 📏 Range Errors
+*Happens when a value is not in the expected range.*
+**Example:**
+```nodejs
+new Array(-1); // ❌ RangeError: Invalid array length
+```
+----
+
 
 
 
