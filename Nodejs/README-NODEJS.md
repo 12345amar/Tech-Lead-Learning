@@ -157,10 +157,52 @@ fs.readFile('file.txt', 'utf8', (err, data) => {
 ## Nodejs Core Modules ##
 ## The Node Module System ##
 
-
+## Global Features vs Core Modules vs Third-Party Modules
 - **Global features:** Keywords like const or function but also some global objects like process
 - **Core Node.js Modules:** Examples would be the file-system module ("fs"), the path module ("path") or the Http module ("http")
 - **Third-party Modules:** Installed via npm install - you can add any kind of feature to your app via this way
+
+## Type of Errors
+- **Syntax Errors**
+*if developer write and incorrect syntax then it give syntax error*
+**Example:**
+```Nodejs
+cons data = [];
+```
+*It's t in const keywords so it gives syntax error*
+
+- **Runtime Errors**
+*A Runtime Error in Node.js is an error that occurs during the execution of your code (as opposed to compile-time errors). These errors crash or interrupt your application if not handled properly.*
+**Example**
+```Nodejs
+function greet(user) {
+  console.log(`Hello, ${user.name}`);
+}
+greet(undefined); // ❌ Runtime Error: Cannot read property 'name' of undefined
+```
+- Logical Errors
+
+# 📘 Types of Errors in Node.js
+*Node.js handles different types of errors that developers may encounter during application runtime. Understanding these categories helps in better debugging, error handling, and writing resilient applications.*
+## 1. 🖥️ System Errors
+*These are triggered by failed system operations like file handling, network requests, etc.*
+**Example:**
+```js
+const fs = require('fs');
+
+fs.readFile('/invalid/path', (err, data) => {
+  if (err) {
+    console.error("System Error:", err.code); // ENOENT
+  }
+});
+**Common system error codes:**
+- **ENOENT** – No such file or directory
+- **EACCES** – Permission denied
+- **ECONNREFUSED** – Connection refused
+- **ETIMEDOUT** – Operation timed out
+
+
+
 
 ## Useful resources:
 - Official Node.js Docs: https://nodejs.org/en/docs/guides/
