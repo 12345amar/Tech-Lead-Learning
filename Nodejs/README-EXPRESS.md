@@ -55,3 +55,5 @@ app.listen(3000, () => {
 - ✅ Microservices and serverless functions
 - ✅ Full-stack apps (MERN/MEVN stack)
 - ✅ SSR with template engines like Pug/EJS
+
+
