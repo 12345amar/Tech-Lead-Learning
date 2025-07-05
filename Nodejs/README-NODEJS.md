@@ -151,14 +151,16 @@ fs.readFile('file.txt', 'utf8', (err, data) => {
   if (err) throw err;
   console.log(data);
 });
-
+```
 
 ## Request and Response with Stream & Buffer ##
 ## Nodejs Core Modules ##
 ## The Node Module System ##
 
 
-
+- **Global features:** Keywords like const or function but also some global objects like process
+- **Core Node.js Modules:** Examples would be the file-system module ("fs"), the path module ("path") or the Http module ("http")
+- **Third-party Modules:** Installed via npm install - you can add any kind of feature to your app via this way
 
 ## Useful resources:
 - Official Node.js Docs: https://nodejs.org/en/docs/guides/
