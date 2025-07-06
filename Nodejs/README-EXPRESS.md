@@ -293,11 +293,13 @@ app.use((req, res, next) => {
 # Express.js Routing with Modular Files
 *This guide shows how to organize Express.js routes using separate files like `admin.js` and `shop.js`.*
 ## Folder Structure
+```js
 project-root/
 ├── app.js
 └── routes/
 ├── admin.js
 └── shop.js
+```
 
 ## Step 1: app.js
 
