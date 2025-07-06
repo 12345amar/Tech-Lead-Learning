@@ -289,5 +289,83 @@ app.use((req, res, next) => {
 | `http-errors`        | Generate HTTP error objects |
 
 ----
-  
+
+# Express.js Routing with Modular Files
+*This guide shows how to organize Express.js routes using separate files like `admin.js` and `shop.js`.*
+## Folder Structure
+project-root/
+├── app.js
+└── routes/
+├── admin.js
+└── shop.js
+
+## Step 1: app.js
+
+```js
+const express = require('express');
+const app = express();
+
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/admin', adminRoutes);
+app.use('/shop', shopRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Welcome');
+});
+
+app.listen(3000, () => {
+  console.log('Server running at http://localhost:3000');
+});
+```
+## Step 2: routes/admin.js
+```js
+const express = require('express');
+const router = express.Router();
+
+router.get('/dashboard', (req, res) => {
+  res.send('Admin Dashboard');
+});
+
+router.post('/add-product', (req, res) => {
+  const { name, price } = req.body;
+  res.send(`Product added: ${name}, ₹${price}`);
+});
+
+module.exports = router;
+```
+
+## Step 3: routes/shop.js
+```js
+const express = require('express');
+const router = express.Router();
+
+router.get('/products', (req, res) => {
+  res.send(['Phone', 'Laptop', 'TV']);
+});
+
+router.get('/product/:id', (req, res) => {
+  res.send(`Product ID: ${req.params.id}`);
+});
+
+module.exports = router;
+```
+## Route Summary
+| Method | Route                | Description     |
+| ------ | -------------------- | --------------- |
+| GET    | `/`                  | Home            |
+| GET    | `/admin/dashboard`   | Admin Dashboard |
+| POST   | `/admin/add-product` | Add Product     |
+| GET    | `/shop/products`     | List Products   |
+| GET    | `/shop/product/:id`  | Product Details |
+
+
+## Notes
+- Use express.Router() to keep routes modular.
+- app.use('/prefix', routeFile) automatically prefixes paths.
+- Good for organizing large applications.
 
