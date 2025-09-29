@@ -20,5 +20,5 @@
 - Use **service accounts** for apps, not users.
 - Remember shared responsibility model: Google secures infra, you secure data & IAM.
 
-➡️ Next: [Networking](./Networking)  
-⬅️ Back: [Home](./Home)
+➡️ Next: [Networking](./3_Networking.md)  
+⬅️ Back: [Home](./1_Home.md)
