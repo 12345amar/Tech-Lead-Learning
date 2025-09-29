@@ -11,5 +11,6 @@
 - GCS is **global**, PD/Filestore are **zonal/ regional**.
 - Use Signed URLs for temporary public access.
 
-➡️ Next: [Databases](./Databases)  
-⬅️ Back: [Compute](./Compute)
+➡️ Next: [Databases](./6_Databases.md)  
+⬅️ Back: [Compute](./4_Compute.md)
+
