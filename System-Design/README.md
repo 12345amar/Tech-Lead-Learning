@@ -83,7 +83,7 @@ Ask about:
 |---|---|
 | Performance | How fast? |
 | Scalability | How much traffic/data? |
-| Availability | What uptime/SLA? |
+| Availability | What uptime/SLA(Service Level Agreement)? |
 | Reliability | What happens when components fail? |
 | Consistency | Must reads always show latest data? |
 | Durability | Can stored data ever be lost? |
