@@ -1,1029 +1,721 @@
-# 🏗️ System Design
+# 🏗️ System Design — Interview Notes
 
-> **System Design is not about finding one perfect architecture.**  
-> It is about understanding requirements, constraints, scale, and trade-offs, and then designing the most suitable system.
-
----
-
-## 📚 Table of Contents
-
-- [3 Important Concepts](#-3-important-concepts)
-  - [1. Abstraction](#1-abstraction)
-  - [2. Uniqueness of Each System](#2-uniqueness-of-each-system)
-  - [3. There Is No "One" Correct Solution](#3-there-is-no-one-correct-solution)
-- [System Design Step-by-Step Process](#-system-design-step-by-step-process)
-- [1. Functional Requirements](#1️⃣-functional-requirements)
-- [2. Non-Functional Requirements](#2️⃣-non-functional-requirements)
-- [3. Define APIs & Sequence of Events](#3️⃣-define-apis--sequence-of-events)
-- [4. Design for Functional Requirements](#4️⃣-design-for-functional-requirements)
-- [5. Address Non-Functional Requirements](#5️⃣-address-non-functional-requirements)
-- [Banking vs Social Media](#-banking-vs-social-media)
-- [System Design Mindset](#-system-design-mindset)
-- [Golden Rules](#-golden-rules)
-- [Complete System Design Flow](#-complete-system-design-flow)
+> **System Design is not about finding one perfect architecture.** It is about understanding requirements, scale, constraints, trade-offs, and choosing the simplest solution that works.
 
 ---
 
-# 🧠 3 Important Concepts
+## 🧠 3 Principles to Remember
 
-Before starting any system design problem, understand these three principles.
+### 1. Abstraction
+Hide implementation details behind a clear interface/contract.
 
-## 1. Abstraction
+**Benefits:** loose coupling, lower complexity, easier testing, change, reuse and scaling.
 
-**Abstraction** means hiding unnecessary implementation details behind a simple interface or service contract.
+### 2. Every System Is Unique
+Architecture depends on:
 
-It allows components to interact **without knowing how the underlying implementation works**.
-
-### Example
-
-An **Order Service** can call a **Payment Gateway** without knowing whether the payment is processed through Stripe, Razorpay, PayPal, or another provider.
-
-```text
-Order Service
-      |
-      | Payment API
-      ↓
-Payment Gateway
-      |
-      ├── Stripe
-      ├── Razorpay
-      └── PayPal
-```
-
-### Benefits of Abstraction
-
-1. Less complexity
-2. Loose coupling
-3. Easy to change
-4. Reusability
-5. Easy maintenance
-6. Better testing
-7. Scalability
-
-> **Key idea:** Abstraction reduces complexity and coupling, making software easier to maintain, test, change, and scale.
-
----
-
-## 2. Uniqueness of Each System
-
-Every system is different.
-
-Each system has its own:
-
-- Functional requirements
-- Non-functional requirements
-- Business rules
-- Users
-- Traffic patterns
-- Data characteristics
-- Security requirements
-- Availability requirements
-- Consistency requirements
-- Cost constraints
-
-Therefore:
-
-> **A system should be designed according to its own requirements, not by blindly copying another system.**
-
-### Example: Banking System
-
-A banking system may require:
-
-- Very high security
-- Strong consistency
-- Accurate transactions
-- Audit logs
-- Very low tolerance for data loss
-- Transaction integrity
-
-For example:
-
-```text
-Transfer ₹10,000
-
-Account A: -₹10,000
-Account B: +₹10,000
-```
-
-Both operations must be correctly handled.
-
-### Example: Social Media System
-
-A social-media system may require:
-
-- Millions or billions of users
-- Very high traffic
-- High read volume
-- Caching
-- CDN
-- Eventual consistency for some features
-- High availability
-- Feed generation
-- Asynchronous processing
-
-For some social-media features, seeing slightly stale data may be acceptable.
-
-> **Different problems → Different constraints → Different designs**
-
----
-
-## 3. There Is No "One" Correct Solution
-
-There is no single universally correct solution to a system-design problem.
-
-Multiple architectures can satisfy the same requirements.
-
-For example:
-
-```text
-Option 1:
-Monolith + SQL
-
-Option 2:
-Microservices + SQL
-
-Option 3:
-Microservices + NoSQL
-
-Option 4:
-Event-driven architecture
-```
-
-All can potentially work depending on:
-
-- Scale
-- Team size
-- Budget
-- Latency requirements
-- Availability requirements
-- Consistency requirements
-- Operational complexity
-- Future growth
-
-Therefore:
-
-> **System design is about trade-offs, not memorizing one architecture.**
-
-> **There is no "one" correct solution — there is a suitable solution based on requirements and constraints.**
-
----
-
-# 🚀 System Design Step-by-Step Process
-
-The core process:
-
-```text
-1. Functional Requirements
-          ↓
-2. Non-Functional Requirements
-          ↓
-3. Define APIs + Sequence of Events
-          ↓
-4. Design for Functional Requirements
-          ↓
-5. Address Non-Functional Requirements
-```
-
-For interviews and real-world design, this can be expanded to:
-
-```text
-Requirements
-     ↓
-Functional Requirements
-     ↓
-Non-Functional Requirements
-     ↓
-Scale Estimation
-     ↓
-API Design
-     ↓
-Data Model
-     ↓
-High-Level Architecture
-     ↓
-Component Deep Dive
-     ↓
-Scalability
-     ↓
-Reliability
-     ↓
-Security
-     ↓
-Monitoring / Observability
-     ↓
-Bottlenecks & Trade-offs
-```
-
----
-
-# 1️⃣ Functional Requirements
-
-## What are Functional Requirements?
-
-Functional requirements describe the **features, actions, and business capabilities** that the system must provide to its users.
-
-In simple words:
-
-> **Functional Requirements = What should the system do?**
-
-### Example: Image-Sharing Social Media Platform
-
-The system should allow users to:
-
-- Register / Login
-- Upload images
-- Create posts
-- Follow / Unfollow users
-- View feed
-- Like posts
-- Comment on posts
-- Delete posts
-- View profiles
-
-```text
-                    User
-                      |
-       ┌──────────────┼──────────────┐
-       ↓              ↓              ↓
-    Register       Upload         Create
-     / Login       Image           Post
-       ↓              ↓              ↓
-   Follow/User     View Feed     Like / Comment
-       ↓
-   View Profile
-       ↓
-   Delete Post
-```
-
-These requirements describe **what the system can do**.
-
-### Important
-
-Functional requirements answer:
-
-> **"What should the system do?"**
-
----
-
-# 2️⃣ Non-Functional Requirements
-
-## What are Non-Functional Requirements?
-
-Non-functional requirements define the **quality attributes, operational constraints, and characteristics** of the system.
-
-In simple words:
-
-> **Non-Functional Requirements = How well should the system work?**
-
-Common examples:
-
-- Performance
-- Scalability
+- Business requirements
+- Traffic and data scale
+- Read/write pattern
+- Latency
 - Availability
-- Reliability
 - Consistency
 - Security
-- Durability
-- Maintainability
-- Observability
 - Cost
 
----
+> **Different problems → different constraints → different designs.**
 
-## Example NFRs
-
-For our image-sharing platform:
-
-```text
-System should:
-
-✓ Handle 10M users
-✓ Respond within ~200 ms for important APIs
-✓ Provide 99.99% availability
-✓ Scale during traffic spikes
-✓ Secure user data
-✓ Prevent data loss
-✓ Continue working if a server fails
-```
-
-These are not features.
-
-They define **how well the system should operate**.
+### 3. No "One" Correct Solution
+Multiple designs can work. Interviewers care about **why** you chose a design and what trade-offs it has.
 
 ---
 
-# 📊 Main NFR Categories
+# 🚀 System Design Interview Framework
+
+Use this flow for almost every interview question:
 
 ```text
-                    Non-Functional
-                          |
-      ┌──────────┬────────┼────────┬──────────┐
-      ↓          ↓        ↓        ↓          ↓
- Performance  Scalability Availability Reliability
-      |           |           |          |
- Latency      Traffic      Uptime     Failure
- Throughput   Growth       SLA        Recovery
-      |
-      ↓
- Consistency
-      |
-      ↓
- Security
-      |
-      ↓
- Durability
-      |
-      ↓
- Maintainability
-      |
-      ↓
- Observability
-      |
-      ↓
- Cost
-```
-
----
-
-## 2.1 Performance
-
-Performance describes how quickly and efficiently the system responds.
-
-### Important Metrics
-
-### Latency
-
-How long a request takes.
-
-```text
-Request → System → Response
-
-Latency = 150 ms
-```
-
-### Throughput
-
-How many requests or operations the system can process per unit of time.
-
-```text
-10,000 requests / second
-```
-
-### Example
-
-```text
-API response time < 200 ms
-```
-
----
-
-## 2.2 Scalability
-
-Scalability is the ability of a system to handle increasing load.
-
-### Traffic Growth
-
-```text
-1M users
-   ↓
-10M users
-   ↓
-100M users
-```
-
-The system should continue functioning as traffic grows.
-
-### Horizontal Scaling
-
-Add more servers:
-
-```text
-              Load Balancer
-             /      |      \
-            ↓       ↓       ↓
-         Server   Server   Server
-```
-
-### Vertical Scaling
-
-Increase resources of an existing server:
-
-```text
-4 CPU / 8 GB RAM
+1. Clarify Requirements
         ↓
-16 CPU / 64 GB RAM
+2. Functional Requirements
+        ↓
+3. Non-Functional Requirements
+        ↓
+4. Capacity / Scale Estimation
+        ↓
+5. API + Data Model
+        ↓
+6. High-Level Architecture
+        ↓
+7. Deep Dive into Critical Components
+        ↓
+8. Scalability + Reliability + Security
+        ↓
+9. Bottlenecks + Trade-offs
 ```
+
+### Golden Interview Rule
+
+> **Do not start with technology. Start with requirements.**
 
 ---
 
-## 2.3 Availability
+# 1️⃣ Functional Requirements — WHAT?
 
-Availability means the system remains accessible when users need it.
+Ask: **What must the system do?**
 
-Example:
+Example — URL Shortener:
 
-```text
-99.99% Availability
-```
-
-The system should continue serving users even when individual components fail.
-
-```text
-Server A ❌
-    |
-    ↓
-Load Balancer
-    |
-    ↓
-Server B ✅
-```
-
----
-
-## 2.4 Reliability
-
-Reliability means the system consistently performs correctly over time.
-
-A reliable system should:
-
-- Handle failures
-- Recover from failures
-- Avoid incorrect results
-- Maintain data integrity
-
-Example:
-
-```text
-Payment Request
-      ↓
-Payment Service
-      ↓
-Database
-```
-
-If something fails midway, the system should avoid charging the customer incorrectly or losing transaction state.
-
----
-
-## 2.5 Consistency
-
-Consistency determines whether users see the correct/latest state of data.
-
-### Strong Consistency
-
-After a successful write, subsequent reads immediately see the updated value.
-
-Important for:
-
-- Banking
-- Payments
-- Financial transactions
-
-### Eventual Consistency
-
-Data may temporarily differ between replicas but eventually becomes consistent.
-
-Often acceptable for:
-
-- Social-media feeds
-- Likes/counts
+- Create short URL
+- Redirect short URL → original URL
+- Optional expiry
 - Analytics
-- Recommendations
 
-> **Consistency requirements depend on the business.**
-
----
-
-## 2.6 Security
-
-Security protects:
-
-- User data
-- Authentication credentials
-- APIs
-- Infrastructure
-- Financial information
-
-Common mechanisms:
-
-- Authentication
-- Authorization
-- Encryption
-- TLS/HTTPS
-- Token-based security
-- Rate limiting
-- Input validation
-- Secrets management
+Keep requirements limited to the **core features** first.
 
 ---
 
-## 2.7 Durability
+# 2️⃣ Non-Functional Requirements — HOW WELL?
 
-Durability means once data is successfully stored, it should not be lost.
+Ask about:
 
-Important for:
-
-- Payments
-- Banking
-- User-generated content
-- Orders
-- Important business records
-
-Common techniques:
-
-- Replication
-- Backups
-- Durable storage
-- Disaster recovery
+| NFR | Key Question |
+|---|---|
+| Performance | How fast? |
+| Scalability | How much traffic/data? |
+| Availability | What uptime/SLA? |
+| Reliability | What happens when components fail? |
+| Consistency | Must reads always show latest data? |
+| Durability | Can stored data ever be lost? |
+| Security | Who can access what? |
+| Observability | How will we detect/debug failures? |
+| Cost | What budget/complexity is acceptable? |
 
 ---
 
-## 2.8 Maintainability
+# 3️⃣ Capacity Estimation
 
-Maintainability describes how easily the system can be:
+You do not need exact numbers. Show your assumptions and order of magnitude.
 
-- Changed
-- Debugged
-- Tested
-- Extended
-- Upgraded
-
-Good abstraction and loose coupling improve maintainability.
-
----
-
-## 2.9 Observability
-
-Observability helps us understand what is happening inside the system.
-
-### Three Pillars
+### Basic Formulas
 
 ```text
-Observability
-   ├── Logs
-   ├── Metrics
-   └── Traces
+Daily Requests = Users × Requests/User/Day
+
+QPS ≈ Daily Requests / 86,400
+
+Peak QPS ≈ Average QPS × Peak Factor
+
+Storage = Objects × Average Object Size
+
+Bandwidth = Requests × Average Response Size
 ```
 
-Example:
+### Always Estimate
 
-```text
-API latency suddenly increases
-        ↓
-Metrics detect problem
-        ↓
-Logs show error
-        ↓
-Trace identifies slow service
-        ↓
-Engineer fixes bottleneck
-```
+- Users / active users
+- Requests per second (QPS)
+- Read vs write ratio
+- Peak traffic
+- Storage growth
+- Bandwidth
+- Cache size if relevant
+
+> **State assumptions clearly. Approximate numbers are better than no reasoning.**
 
 ---
 
-## 2.10 Cost
+# 4️⃣ API Design
 
-A technically excellent architecture may still be a bad design if it is unnecessarily expensive.
-
-Consider:
-
-- Compute cost
-- Database cost
-- Storage cost
-- Network cost
-- CDN cost
-- Operational cost
-- Engineering complexity
-
-> **Design for the required scale, not imaginary scale.**
-
----
-
-# 🏦 Banking vs 📱 Social Media
-
-Understanding the uniqueness of systems is important.
-
-| Requirement | Banking | Social Media |
-|---|---|---|
-| Security | Extremely high | High |
-| Consistency | Usually strong | Eventual consistency may be acceptable |
-| Data loss | Very low tolerance | Depends on data |
-| Audit logs | Critical | Important |
-| Traffic | High | Extremely high |
-| Caching | Selective | Very important |
-| CDN | Less central | Very important |
-| Availability | Critical | Critical |
-| Transactions | Must be accurate | Less transaction-heavy |
-
-This demonstrates why we **cannot simply copy one system's architecture into another system**.
-
----
-
-# 3️⃣ Define APIs & Sequence of Events
-
-Once requirements are clear, define how components and users interact with the system.
-
-## API Design
+Define APIs only for important functional requirements.
 
 Example:
 
 ```http
-POST /api/v1/users
-POST /api/v1/login
-
-POST /api/v1/posts
-GET  /api/v1/feed
-
-POST /api/v1/posts/{id}/like
-POST /api/v1/posts/{id}/comments
-
-POST /api/v1/users/{id}/follow
-DELETE /api/v1/users/{id}/follow
-
-GET /api/v1/users/{id}
-DELETE /api/v1/posts/{id}
+POST /urls
+GET  /{shortCode}
+DELETE /urls/{id}
+GET /urls/{id}/analytics
 ```
 
-The exact API depends on the functional requirements.
+Mention when relevant:
+
+- HTTP method
+- Request/response
+- Authentication
+- Pagination
+- Idempotency
+- Error handling
+- Rate limiting
+- API versioning
 
 ---
 
-## 🔄 Sequence of Events
+# 5️⃣ Data Model
 
-### Example: Upload Image
+Identify the important entities and relationships before choosing a database.
 
-```text
-User
-  |
-  | 1. Request upload
-  ↓
-API Server
-  |
-  | 2. Generate upload URL
-  ↓
-Object Storage
-  |
-  | 3. Upload image
-  ↓
-Object Storage
-  |
-  | 4. Return success
-  ↓
-API Server
-  |
-  | 5. Save metadata
-  ↓
-Database
-```
-
-For large systems, heavy operations can be asynchronous:
+Example — URL Shortener:
 
 ```text
-User
- ↓
-API
- ↓
-Queue
- ↓
-Worker
- ↓
-Image Processing
- ↓
-Object Storage
+URL
+-----------------
+id
+short_code
+long_url
+user_id
+created_at
+expires_at
 ```
+
+Ask:
+
+- What is the primary key?
+- Which fields need indexes?
+- What are the read/write patterns?
+- Do we need transactions?
+- How large will the data become?
 
 ---
 
-# 4️⃣ Design for Functional Requirements
+# 🏛️ 6️⃣ High-Level Architecture
 
-Now convert the functional requirements into actual system components.
-
-### Example: Image-Sharing Platform
+A common starting point:
 
 ```text
-                    Users
-                      |
+                    Client
                       ↓
-                 CDN / DNS
-                      |
+                 DNS / CDN
                       ↓
-                Load Balancer
-                      |
+               Load Balancer
                       ↓
                 API Gateway
-                      |
-          ┌───────────┼───────────┐
-          ↓           ↓           ↓
-       User        Post        Feed
-      Service     Service     Service
-          |           |           |
-          ↓           ↓           ↓
-       Database    Database     Cache
-                      |
                       ↓
-                 Message Queue
-                      |
-                      ↓
-                   Workers
-                      |
-                      ↓
-                Object Storage
+               Application Tier
+                /     |      \
+               ↓      ↓       ↓
+            Cache   Service   Queue
+               |      |        |
+               ↓      ↓        ↓
+            Database       Workers
+               |
+               ↓
+        Object / Blob Storage
 ```
 
-### Possible Technologies
-
-| Component | Examples |
-|---|---|
-| CDN | Cloud CDN, CloudFront |
-| Load Balancer | Cloud/AWS Load Balancer |
-| Cache | Redis |
-| Database | PostgreSQL, MySQL, MongoDB |
-| Queue | Kafka, Pub/Sub, SQS |
-| Object Storage | S3, GCS |
-
-> **Technology selection comes after requirements, not before them.**
+Do not add components unless a requirement justifies them.
 
 ---
 
-# 5️⃣ Address Non-Functional Requirements
+# 🧩 Core Building Blocks
 
-After the functional architecture is ready, optimize it for the required NFRs.
+## DNS
+Maps a domain name to an IP/service.
 
-## Performance
+## CDN
+Caches static/content-heavy data near users.
 
-Use:
+**Good for:** images, videos, JS/CSS, static files.
 
-- Caching
-- CDN
-- Database indexing
-- Efficient queries
-- Connection pooling
-- Async processing
+## Load Balancer
+Distributes traffic across healthy instances.
+
+Common strategies:
+
+- Round Robin
+- Least Connections
+- Weighted
+- IP Hash
+
+## API Gateway
+Common entry point for APIs.
+
+Can provide:
+
+- Authentication
+- Routing
+- Rate limiting
+- Logging
+- Request transformation
+
+## Stateless Application Servers
+Keep session state outside the server so instances can scale horizontally.
+
+## Cache
+Stores frequently accessed data closer to the application.
+
+Common patterns:
 
 ```text
-User
- ↓
-CDN / Cache
- ↓
-API
- ↓
-Database
+Cache-Aside:
+App → Cache → Miss → DB → Cache
 ```
+
+Important topics:
+
+- TTL
+- Eviction
+- Cache invalidation
+- Cache stampede
+- Hot keys
+- Hit ratio
+
+> **"There are only two hard things in Computer Science: cache invalidation and naming things."**
+
+## Message Queue
+Decouples producers and consumers and enables asynchronous processing.
+
+```text
+Producer → Queue → Consumer
+```
+
+Use for:
+
+- Email/notifications
+- Image/video processing
+- Analytics
+- Background jobs
+- Event-driven workflows
+
+Important concepts:
+
+- At-most-once
+- At-least-once
+- Ordering
+- Retry
+- Dead-letter queue
+- Consumer lag
+- Idempotency
 
 ---
 
-## Scalability
+# 🗄️ Database Design
 
-Use:
+## SQL vs NoSQL
 
-- Horizontal scaling
+### SQL
+Use when you need:
+
+- Strong relationships
+- Transactions
+- Structured schema
+- Complex queries
+- Strong consistency
+
+Examples: PostgreSQL, MySQL.
+
+### NoSQL
+Useful for:
+
+- Massive scale
+- Flexible schema
+- High throughput
+- Specific access patterns
+
+Examples: DynamoDB, Cassandra, MongoDB.
+
+> **Choose the database from access patterns and requirements — not popularity.**
+
+---
+
+## Database Scaling
+
+### Read Replicas
+
+```text
+              Primary
+             /       \
+          Write     Replicas
+                     /   \
+                   Read Read
+```
+
+### Sharding / Partitioning
+Split data across nodes.
+
+```text
+Shard 1 → Users 1–1M
+Shard 2 → Users 1M–2M
+Shard 3 → Users 2M–3M
+```
+
+Common partition keys:
+
+- user_id
+- tenant_id
+- region
+
+### Important Problems
+
+- Hot partitions
+- Cross-shard queries
+- Rebalancing
+- Distributed transactions
+- Replication lag
+
+---
+
+# 🔄 Consistency & Availability
+
+## Strong Consistency
+Reads immediately reflect successful writes.
+
+**Useful for:** payments, balances, critical transactions.
+
+## Eventual Consistency
+Replicas converge over time.
+
+**Useful for:** feeds, likes, analytics, recommendations.
+
+### CAP Theorem
+In the presence of a **network partition**, a distributed system must choose between:
+
+- **Consistency (C)**
+- **Availability (A)**
+
+Partition tolerance (P) is assumed for distributed systems.
+
+> CAP is about behavior **during a partition**, not a simple "pick any two" rule.
+
+---
+
+# ⚡ Scalability
+
+## Vertical Scaling
+Increase resources of one machine.
+
+```text
+4 CPU / 8 GB
+     ↓
+16 CPU / 64 GB
+```
+
+Simple, but has hardware limits.
+
+## Horizontal Scaling
+Add more machines.
+
+```text
+             Load Balancer
+            /      |      \
+         Server  Server  Server
+```
+
+Preferred for large distributed systems.
+
+### Common Scaling Techniques
+
 - Load balancing
 - Stateless services
-- Database replication
-- Partitioning / Sharding
-- Queues
 - Caching
-
-```text
-                 Load Balancer
-               /       |       \
-              ↓        ↓        ↓
-           Server    Server    Server
-```
-
----
-
-## Availability
-
-Use:
-
-- Multiple instances
-- Multiple availability zones
-- Health checks
-- Failover
-- Replication
+- CDN
+- Read replicas
+- Sharding
+- Async processing
+- Queue-based architecture
 - Auto-scaling
 
-```text
-           Load Balancer
-          /             \
-       Zone A          Zone B
-       Server          Server
-          \             /
-           \           /
-             Database
-             Replica
-```
-
 ---
 
-## Reliability
+# 🛡️ Reliability & Fault Tolerance
+
+Assume components **will fail**.
 
 Use:
 
-- Retries
-- Timeouts
-- Circuit breakers
-- Idempotency
 - Replication
-- Disaster recovery
+- Health checks
+- Timeouts
+- Retries
+- Exponential backoff
+- Circuit breakers
+- Failover
+- Idempotency
 - Graceful degradation
+- Backups
+- Disaster recovery
+
+### Retry Warning
+Never blindly retry every request.
+
+For payments, use **idempotency keys** to avoid duplicate operations.
 
 ---
 
-## Security
+# 🔐 Security
+
+Always consider:
 
 ```text
 Authentication
       ↓
 Authorization
       ↓
-Rate Limiting
-      ↓
 Input Validation
+      ↓
+Rate Limiting
       ↓
 Encryption
       ↓
-Secure Storage
+Audit / Monitoring
 ```
 
+Know these interview topics:
+
+- OAuth / JWT
+- TLS/HTTPS
+- Encryption at rest/in transit
+- RBAC
+- Secrets management
+- API rate limiting
+- DDoS protection
+- SQL/NoSQL injection
+- Least privilege
+
 ---
 
-## Durability
+# 📊 Observability
 
-Use:
+Three pillars:
 
-- Replication
-- Backups
-- Multi-region storage where required
-- Durable object storage
-- Recovery mechanisms
-
----
-
-## Observability
+```text
+Logs + Metrics + Traces
+```
 
 Monitor:
 
-```text
-Logs
-Metrics
-Traces
-Alerts
-Dashboards
-```
-
-Important metrics:
-
-- Request latency
+- Latency
 - Error rate
-- CPU / Memory
-- Throughput
-- Queue depth
-- Database latency
+- Throughput/QPS
+- CPU/memory
+- DB latency
 - Cache hit ratio
+- Queue depth/consumer lag
 - Availability
 
+Use correlation/request IDs to trace a request across services.
+
 ---
 
-# 🎯 System Design Mindset
+# 🔁 Synchronous vs Asynchronous
 
-Do not start with:
-
-> "Should I use MongoDB or PostgreSQL?"
-
-Start with:
+### Synchronous
+Caller waits for response.
 
 ```text
-What are the requirements?
-        ↓
-What is the scale?
-        ↓
-What are the constraints?
-        ↓
-What are the bottlenecks?
-        ↓
-What architecture solves them?
-        ↓
-What trade-offs are introduced?
+Client → API → Service → DB → Response
 ```
 
-### Core Formula
+Use when the result is required immediately.
 
-> **Requirements → Constraints → Bottlenecks → Solution → Trade-offs**
-
----
-
-# ⭐ Golden Rules
-
-### Rule 1 — Understand Before Designing
-
-Don't jump directly to architecture.
-
-### Rule 2 — Every System Is Unique
-
-Don't blindly copy another system.
-
-### Rule 3 — No Single Correct Architecture
-
-Choose based on requirements and trade-offs.
-
-### Rule 4 — Functional First, NFR Next
-
-First understand **what the system does**, then determine **how well it must do it**.
-
-### Rule 5 — Don't Over-Engineer
-
-Design for realistic requirements and expected growth.
-
-### Rule 6 — Every Decision Has a Trade-off
+### Asynchronous
+Caller submits work and processing happens later.
 
 ```text
-Strong Consistency
-      ↕
-Performance / Availability
-
-More Replicas
-      ↕
-Higher Cost
-
-Microservices
-      ↕
-More Operational Complexity
+Client → API → Queue → Worker → DB/Storage
 ```
+
+Use for long-running or non-critical background work.
 
 ---
 
-# 🧩 Complete System Design Flow
+# 🔥 Common System Design Interview Questions
+
+Prepare these patterns rather than memorizing individual diagrams:
+
+### Beginner / Core
+
+1. Design a URL Shortener
+2. Design a Rate Limiter
+3. Design a File Storage System
+4. Design a Pastebin
+5. Design an API Gateway
+
+### Medium
+
+6. Design WhatsApp / Chat System
+7. Design Twitter/X Feed
+8. Design Instagram
+9. Design YouTube
+10. Design Netflix
+11. Design Notification System
+12. Design Search Autocomplete
+13. Design Web Crawler
+14. Design Ride Sharing
+15. Design Food Delivery
+
+### Advanced
+
+16. Design Distributed Cache
+17. Design Distributed Message Queue
+18. Design Distributed Lock
+19. Design Real-Time Analytics
+20. Design Payment System
+21. Design Ticket Booking System
+22. Design E-commerce Platform
+23. Design News Feed at Massive Scale
+24. Design Logging / Monitoring Platform
+25. Design Multi-Tenant SaaS Platform
+
+---
+
+# 🧠 Questions Interviewers Commonly Ask
+
+For any design, be ready to answer:
+
+### Requirements
+- What are the core features?
+- What can we ignore for now?
+- What is the expected scale?
+
+### API
+- What APIs are needed?
+- Is the API idempotent?
+- How will pagination work?
+- How will we rate-limit clients?
+
+### Database
+- SQL or NoSQL — why?
+- What is the partition key?
+- Where do we need indexes?
+- How will reads scale?
+- What happens when a shard fails?
+
+### Performance
+- Where is the bottleneck?
+- Can we cache it?
+- Can we use a CDN?
+- Can the operation become asynchronous?
+
+### Scalability
+- How do we handle 10× traffic?
+- What happens during traffic spikes?
+- How do we scale the database?
+
+### Reliability
+- What happens if a server/database/queue fails?
+- How do we retry safely?
+- How do we avoid duplicate processing?
+- What is the disaster-recovery strategy?
+
+### Consistency
+- Strong or eventual consistency?
+- What stale data is acceptable?
+- What happens during replication lag?
+
+### Trade-offs
+- Why this database?
+- Why cache?
+- Why queue?
+- Why microservices instead of a monolith?
+- What would you change at 10× scale?
+
+---
+
+# ⚖️ Essential Trade-offs
+
+| Decision | Trade-off |
+|---|---|
+| SQL vs NoSQL | Transactions/relationships vs flexible massive-scale access patterns |
+| Strong vs Eventual Consistency | Correctness/immediacy vs availability/latency |
+| Cache | Lower latency/load vs invalidation/staleness |
+| Sync vs Async | Immediate result vs better decoupling/scalability |
+| Monolith vs Microservices | Simplicity vs independent scaling/deployment |
+| Replication | Availability/read scale vs consistency/storage cost |
+| Sharding | Massive write/data scale vs operational complexity |
+| More replicas | Availability/read scale vs cost |
+
+> **Every architecture decision should have a reason and a trade-off.**
+
+---
+
+# 🎯 Deep-Dive Topics You Must Know
+
+For senior / Tech Lead interviews, understand these beyond definitions:
+
+- Load balancing
+- CDN
+- Caching strategies
+- Cache invalidation
+- Database indexing
+- Replication
+- Sharding
+- CAP theorem
+- Consistency models
+- Message queues
+- Kafka fundamentals
+- Idempotency
+- Distributed locks
+- Rate limiting algorithms
+- Circuit breaker
+- Retry/backoff
+- API gateway
+- Service discovery
+- Event-driven architecture
+- Pub/Sub
+- WebSockets
+- Long polling
+- Object storage
+- Search systems
+- Authentication/authorization
+- Observability
+- Disaster recovery
+- Multi-region architecture
+- Hot keys / hot partitions
+- Backpressure
+- Exactly-once vs at-least-once processing
+
+---
+
+# 📌 Quick Interview Checklist
+
+Before finishing your answer, verify:
+
+- [ ] Requirements clarified
+- [ ] FR + NFR defined
+- [ ] Scale estimated
+- [ ] APIs defined
+- [ ] Data model discussed
+- [ ] Database choice justified
+- [ ] High-level architecture drawn
+- [ ] Cache/CDN considered
+- [ ] Queue/async processing considered
+- [ ] Scaling strategy explained
+- [ ] Failure handling explained
+- [ ] Consistency model explained
+- [ ] Security covered
+- [ ] Observability covered
+- [ ] Bottlenecks identified
+- [ ] Trade-offs explained
+- [ ] Future 10× scale discussed
+
+---
+
+# 🧩 One-Line Mental Model
 
 ```text
-                 SYSTEM DESIGN
-                      |
-                      ↓
-          ┌─────────────────────┐
-          │  3 Core Principles  │
-          └─────────────────────┘
-             ↓       ↓       ↓
-       Abstraction  Unique   No One
-                    System   Correct Solution
-                              |
-                              ↓
-                  Functional Requirements
-                              ↓
-               Non-Functional Requirements
-                              ↓
-                     Scale Estimation
-                              ↓
-                   API + Event Sequence
-                              ↓
-                  Functional Architecture
-                              ↓
-                Address NFR Requirements
-                              ↓
-                     Deep Dive
-                              ↓
-                    Bottlenecks
-                              ↓
-                     Trade-offs
-                              ↓
-                   Final Architecture
+Requirements
+   ↓
+Scale
+   ↓
+API + Data
+   ↓
+Architecture
+   ↓
+Scale + Cache + DB + Queue
+   ↓
+Reliability + Security + Observability
+   ↓
+Bottlenecks + Trade-offs
 ```
 
----
-
-# 📌 Interview Checklist
-
-When asked to design a system, walk through these questions:
-
-- [ ] What are the functional requirements?
-- [ ] What are the non-functional requirements?
-- [ ] How many users?
-- [ ] How much traffic?
-- [ ] What is the read/write ratio?
-- [ ] What latency is required?
-- [ ] What availability is required?
-- [ ] What consistency model is required?
-- [ ] What data needs to be stored?
-- [ ] What APIs are required?
-- [ ] What is the request/response flow?
-- [ ] Where will caching help?
-- [ ] Where will a CDN help?
-- [ ] Do we need a message queue?
-- [ ] How will the system scale?
-- [ ] What happens when a component fails?
-- [ ] How will data be replicated?
-- [ ] How will the system be secured?
-- [ ] How will we monitor it?
-- [ ] What are the major bottlenecks?
-- [ ] What trade-offs are we making?
-- [ ] What can be improved in the future?
+> ## 🚀 Interview Formula
+> **Understand → Estimate → Design → Deep Dive → Scale → Handle Failures → Explain Trade-offs**
 
 ---
 
-# 🚀 Key Takeaway
+# 🏆 Final Takeaway
 
 > **Good System Design = Correct Requirements + Appropriate Architecture + Explicit Trade-offs**
 
-System design is not about drawing the biggest architecture.
-
-It is about choosing the **simplest architecture that satisfies the required functionality, scale, reliability, security, performance, and business constraints.**
+Don't try to draw the biggest architecture. Build the **simplest system that satisfies the current requirements and can evolve as the system grows.**
