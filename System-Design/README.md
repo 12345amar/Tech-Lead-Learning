@@ -83,7 +83,7 @@ Ask about:
 |---|---|
 | Performance | How fast? |
 | Scalability | How much traffic/data? |
-| Availability | What uptime/SLA(Service Level Agreement)? |
+| Availability | What uptime/SLA (Service Level Agreement)? |
 | Reliability | What happens when components fail? |
 | Consistency | Must reads always show latest data? |
 | Durability | Can stored data ever be lost? |
@@ -138,7 +138,20 @@ DELETE /urls/{id}
 GET /urls/{id}/analytics
 ```
 
-Mention when relevant:
+### API Concepts — Quick Definitions
+
+| Concept | Short Definition |
+|---|---|
+| **HTTP Method** | Defines the operation: `GET` read, `POST` create/action, `PUT` replace, `PATCH` update, `DELETE` remove. |
+| **Request / Response** | Request is what the client sends; response is what the server returns, usually with status code, headers and body. |
+| **Authentication** | Verifies **who** the caller is, e.g. JWT, OAuth, API key. |
+| **Pagination** | Splits large result sets into smaller pages using `page/limit`, cursor, etc. |
+| **Idempotency** | Repeating the same request produces the same intended result; important for retries such as payments. |
+| **Error Handling** | Return meaningful status codes and safe, consistent error responses. |
+| **Rate Limiting** | Restricts requests per client/time window to protect the system and ensure fair usage. |
+| **API Versioning** | Allows APIs to evolve without breaking existing clients, e.g. `/api/v1/users`. |
+
+### Mention when relevant
 
 - HTTP method
 - Request/response
@@ -244,7 +257,7 @@ Keep session state outside the server so instances can scale horizontally.
 ## Cache
 Stores frequently accessed data closer to the application.
 
-Common patterns:
+Common pattern:
 
 ```text
 Cache-Aside:
@@ -259,8 +272,6 @@ Important topics:
 - Cache stampede
 - Hot keys
 - Hit ratio
-
-> **"There are only two hard things in Computer Science: cache invalidation and naming things."**
 
 ## Message Queue
 Decouples producers and consumers and enables asynchronous processing.
@@ -315,8 +326,6 @@ Useful for:
 Examples: DynamoDB, Cassandra, MongoDB.
 
 > **Choose the database from access patterns and requirements — not popularity.**
-
----
 
 ## Database Scaling
 
