@@ -177,7 +177,7 @@ Product details are read millions of times but change rarely. Cache product data
 ### Interview Point
 Always discuss:
 
-- TTL
+- TTL(Time To Live)
 - Eviction policy
 - Cache hit ratio
 - Invalidation
@@ -195,7 +195,7 @@ Cache invalidation means ensuring stale cached data is removed or updated when s
 
 ### Strategies
 
-#### TTL
+#### TTL(Time To Live)
 Data automatically expires.
 
 #### Explicit Invalidation
@@ -216,7 +216,7 @@ New version naturally bypasses the old cache.
 ### Real Scenario
 A product price changes from ₹999 → ₹799, but Redis still has ₹999. Users may see the wrong price.
 
-For critical values, do not rely only on a long TTL.
+For critical values, do not rely only on a long TTL(Time To Live).
 
 ### Cache Stampede
 A popular key expires and thousands of requests hit the DB simultaneously.
@@ -224,7 +224,7 @@ A popular key expires and thousands of requests hit the DB simultaneously.
 Solutions:
 
 - Lock/single-flight
-- Staggered TTLs
+- Staggered TTL(Time To Live)s
 - Refresh-ahead
 - Request coalescing
 
@@ -754,7 +754,7 @@ User Order Payment
 A mobile app calls one gateway instead of knowing the locations of 20 microservices.
 
 ### Trade-off
-Gateway simplifies clients but can become a bottleneck or single point of failure if poorly designed. Run multiple instances and keep responsibilities focused.
+Gateway simplifies clients but can become a boTTL(Time To Live)eneck or single point of failure if poorly designed. Run multiple instances and keep responsibilities focused.
 
 ---
 
@@ -1338,7 +1338,7 @@ Kafka → Scale event processing
 Rate Limiting → Protect system
 Backpressure → Protect consumers
 Circuit Breaker → Stop cascading failure
-Observability → Detect bottlenecks
+Observability → Detect boTTL(Time To Live)enecks
 Multi-Region/DR → Survive regional failure
 ```
 
@@ -1372,7 +1372,7 @@ For every deep-dive topic, answer in this order:
 
 **Why?** Reduce latency and DB load.
 
-**How?** Cache-aside/TTL/etc.
+**How?** Cache-aside/TTL(Time To Live)/etc.
 
 **Scenario?** Product catalog.
 
