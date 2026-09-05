@@ -2,7 +2,7 @@
 
 ## What is SSE?
 
-SSE is a **one-way, server-to-client streaming mechanism** where the server pushes real-time updates over a single long-lived HTTP connection. fileciteturn11file0L10-L20
+SSE is a **one-way, server-to-client streaming mechanism** where the server pushes real-time updates over a single long-lived HTTP connection.
 
 ```text
 Client ---- connect ----> Server
@@ -21,7 +21,7 @@ Imagine a live TV/news screen. You watch; the broadcaster keeps sending updates.
 2. Server responds with `Content-Type: text/event-stream`.
 3. Connection stays open.
 4. Server continuously writes events.
-5. Browser receives events automatically. fileciteturn11file5L258-L278
+5. Browser receives events automatically.
 
 ## Client
 
@@ -45,13 +45,13 @@ app.get('/sse', (req, res) => {
 });
 ```
 
-The SSE message format must end with a blank line (`\n\n`) so the browser emits the event. fileciteturn11file5L269-L278
+The SSE message format must end with a blank line (`\n\n`) so the browser emits the event.
 
 ## Important Event Fields
 
 ```text
 id: 1
- event: update
+event: update
 data: Hello
 
 ```
@@ -59,11 +59,11 @@ data: Hello
 - `data` → payload.
 - `event` → custom event name.
 - `id` → event ID for reconnection/resume.
-- `retry` → reconnection delay. fileciteturn11file5L308-L321
+- `retry` → reconnection delay.
 
 ## Key Advantage
 
-SSE uses standard HTTP and has built-in browser reconnection behavior, making it simpler than WebSocket when communication is only **server → client**. fileciteturn11file5L322-L326
+SSE uses standard HTTP and has built-in browser reconnection behavior, making it simpler than WebSocket when communication is only **server -> client**.
 
 ## Use Cases
 
@@ -72,7 +72,7 @@ SSE uses standard HTTP and has built-in browser reconnection behavior, making it
 - News feeds.
 - Logs streaming.
 - AI streaming responses.
-- Low-frequency stock updates. fileciteturn11file5L352-L361
+- Low-frequency stock updates.
 
 ## Limitations
 
@@ -80,7 +80,7 @@ SSE uses standard HTTP and has built-in browser reconnection behavior, making it
 - Text-based data.
 - Not ideal for high-frequency real-time systems.
 - Long-lived connections complicate scaling/load balancing.
-- Browser connection limits can matter. fileciteturn11file5L327-L345
+- Browser connection limits can matter.
 
 ## SSE vs WebSocket
 
