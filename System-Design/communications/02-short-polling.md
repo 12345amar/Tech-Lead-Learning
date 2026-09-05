@@ -14,7 +14,7 @@ Client -> Server: Any update?
 Server -> Client: Yes
 ```
 
-The course describes intervals such as 2, 5 or 10 seconds. fileciteturn10file5L140-L148
+Typical intervals can be 2, 5 or 10 seconds.
 
 ## Easy Example
 
@@ -36,21 +36,19 @@ Even when the order has not changed, the request still happens.
 4. Client sends another request.
 5. Repeat.
 
-This is the flow shown in the course. fileciteturn10file4L97-L102
-
 ## Advantages
 
 - Very simple.
 - Easy to implement with normal HTTP/fetch/axios.
 - Works almost everywhere.
-- Good for small applications where real-time speed is not critical. fileciteturn10file4L110-L119
+- Good for small applications where real-time speed is not critical.
 
 ## Disadvantages
 
 - **Wasted requests:** many requests may return unchanged data.
 - **Higher server load:** frequent polling creates unnecessary traffic.
 - **Not truly real-time:** update waits until the next poll.
-- Poor choice when many users poll frequently. fileciteturn10file4L120-L128
+- Poor choice when many users poll frequently.
 
 ## Example
 
