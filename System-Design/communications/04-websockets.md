@@ -2,7 +2,7 @@
 
 ## What is it?
 
-WebSocket provides a **persistent, full-duplex (two-way) connection** between client and server. Once connected, both sides can send data at any time without creating new HTTP requests. fileciteturn10file8L309-L318
+WebSocket provides a **persistent, full-duplex (two-way) connection** between client and server. Once connected, both sides can send data at any time without creating new HTTP requests.
 
 ### Easy Analogy
 
@@ -15,7 +15,7 @@ Client <====================> Server
 
 ## How Connection Starts
 
-WebSocket starts with an HTTP request and asks the server to upgrade the connection. The server responds with `101 Switching Protocols`. fileciteturn11file4L194-L207
+WebSocket starts with an HTTP request and asks the server to upgrade the connection. The server responds with `101 Switching Protocols`.
 
 ```text
 Client -- HTTP Upgrade --> Server
@@ -24,7 +24,7 @@ Client <-- 101 Switching Protocols -- Server
 Client <==== WebSocket ====> Server
 ```
 
-After the upgrade, it becomes a persistent WebSocket connection. fileciteturn11file4L208-L216
+After the upgrade, it becomes a persistent WebSocket connection.
 
 ## Why WebSocket?
 
@@ -54,7 +54,7 @@ No repeated HTTP requests are required.
 - Full-duplex / bidirectional.
 - Low latency.
 - Real-time communication.
-- Both sides can send messages independently. fileciteturn10file6L190-L194
+- Both sides can send messages independently.
 
 ## Example: Chat
 
@@ -69,7 +69,7 @@ Typical use cases:
 - Multiplayer games.
 - Live trading.
 - Highly interactive dashboards.
-- Real-time notifications. fileciteturn13file1L204-L208
+- Real-time notifications.
 
 ## Simple Node.js Idea
 
@@ -81,8 +81,6 @@ io.on('connection', (socket) => {
 });
 ```
 
-The course uses Socket.IO to demonstrate connection, message events and disconnect handling. fileciteturn10file7L271-L297
-
 ## Challenges at Scale
 
 WebSockets are powerful, but production systems need to handle:
@@ -93,7 +91,7 @@ WebSockets are powerful, but production systems need to handle:
 - Connection limits.
 - Horizontal scaling across multiple servers.
 - Sticky sessions or shared state/pub-sub when needed.
-- Disconnect cleanup and memory leaks. fileciteturn11file4L227-L238
+- Disconnect cleanup and memory leaks.
 
 ## WebSocket vs Polling
 
