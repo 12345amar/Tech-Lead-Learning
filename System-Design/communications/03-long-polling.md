@@ -2,7 +2,7 @@
 
 ## What is it?
 
-Long polling is an HTTP technique where the **client sends a request and the server keeps it open until new data is available or a timeout occurs**. fileciteturn13file0L11-L18
+Long polling is an HTTP technique where the **client sends a request and the server keeps it open until new data is available or a timeout occurs**.
 
 ```text
 Client -> Server: Any update?
@@ -27,7 +27,7 @@ You don't repeatedly ask. You wait for the reply.
 3. Server waits for new data or timeout.
 4. Server sends response.
 5. Client immediately opens a new request.
-6. Cycle continues. fileciteturn13file0L28-L36
+6. Cycle continues.
 
 ## Why Better Than Short Polling?
 
@@ -46,21 +46,21 @@ Request -> WAIT -> Data available -> Response
 Request -> WAIT -> Data available -> Response
 ```
 
-So it reduces unnecessary responses and gets closer to real-time. fileciteturn13file0L44-L54
+So it reduces unnecessary responses and gets closer to real-time.
 
 ## Advantages
 
 - More efficient than short polling.
 - Near real-time delivery when data becomes available.
 - Uses standard HTTP.
-- No WebSocket-specific protocol is required. fileciteturn13file0L49-L54
+- No WebSocket-specific protocol is required.
 
 ## Disadvantages
 
 - Open requests consume server resources.
 - Harder to scale with many clients.
 - Requires timeout handling.
-- After each response, another request must be created. fileciteturn13file0L55-L64
+- After each response, another request must be created.
 
 ## Example Implementation Idea
 
@@ -74,8 +74,6 @@ app.get('/getData', (req, res) => {
   waitingClients.push(res);
 });
 ```
-
-The course demo keeps waiting client responses and completes them when data is updated. fileciteturn13file0L111-L129
 
 ## When to Use
 
