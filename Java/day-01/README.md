@@ -624,3 +624,9 @@ Before considering these concepts mastered, you should be able to:
 | println | Write value followed by line terminator |
 
 **Next lesson:** Day 2 — Variables, data types, type casting and operators.
+
+
+## Detailed learning guide and visuals
+
+- [Detailed Day 1 explanations and interview Q&A](README.md) — JDK/JRE/JVM, bytecode, class loading, `main`, `System.out.println`, classes and objects, exercises and interview answers.
+- [Visual diagrams](DIAGRAMS.md) — platform layers, compile/run flow, `main` breakdown, class/object model and standard output path.
