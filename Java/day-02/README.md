@@ -1350,7 +1350,6 @@ The following example illustrates several Day 2 principles together. It is still
 ```java
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
 
 public class SubscriptionInvoice {
     private static final BigDecimal TAX_RATE = new BigDecimal("0.18");
@@ -1389,7 +1388,7 @@ Review points:
 5. Negative taxable amount is rejected.
 6. Rounding mode and scale are explicit.
 7. Real tax rules, jurisdiction, currency and rounding stage must come from business requirements.
-8. An unused import such as `Objects` should be removed; clean imports are part of code review. (Remove it from this example if copying.)
+8. Keep imports minimal; remove any import that the class does not use.
 
 ---
 
