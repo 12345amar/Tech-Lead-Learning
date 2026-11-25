@@ -2,29 +2,45 @@
 
 **Last updated:** 2026-11-25  
 **Operating system:** macOS  
-**Setup status:** Not started  
+**Mac architecture:** arm64 (Apple Silicon) — confirmed  
+**Setup status:** Architecture verified; JDK installation pending  
 **Overall Day 1 status:** In progress
 
 ## Setup checklist
 
-- [ ] Identify Mac architecture (`arm64` or `x86_64`)
-- [ ] Install JDK 25 (macOS package matching architecture)
+- [x] Identify Mac architecture (`arm64` / Apple Silicon)
+- [ ] Install JDK 25 — macOS AArch64 / ARM64, JDK package, PKG installer
 - [ ] Install VS Code
 - [ ] Install the Microsoft Extension Pack for Java
 - [ ] Verify `java -version`
 - [ ] Verify `javac -version`
 - [ ] Run `HelloWorld.java`
 
-## Next action
+## Correct JDK download
 
-Run this command in Terminal and share its output:
+Use [Eclipse Temurin JDK 25 releases](https://adoptium.net/temurin/releases/?os=mac&arch=aarch64&package=jdk&version=25).
+
+Choose:
+- Version: 25 (LTS)
+- Operating system: macOS
+- Architecture: AArch64 / ARM64
+- Package: JDK
+- Installer: PKG
+
+The installer filename should identify `jdk_aarch64_mac` and end in `.pkg`.
+
+## Next steps
+
+1. Download and run the matching PKG installer.
+2. Open a new Terminal window.
+3. Run:
 
 ```bash
-uname -m
+java -version
+javac -version
+/usr/libexec/java_home -V
 ```
 
-Then choose the matching JDK installer:
-- `arm64`: macOS ARM64
-- `x86_64`: macOS x64
+4. Share the output in the learning conversation.
 
-Do not mark setup complete until both Java version commands work and the first program runs successfully.
+Do not mark setup complete until both Java version commands work and `HelloWorld.java` runs successfully.
