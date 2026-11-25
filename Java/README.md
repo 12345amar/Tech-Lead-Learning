@@ -6,7 +6,7 @@ A practical, 2-hour-per-day learning path designed to build from basic Java know
 - Current Java level: Basic
 - IDE: Visual Studio Code
 - Daily commitment: 2 hours
-- Goal: Java Full Stack Tech Lead
+- Goal: Java Full Stack Developer + Tech Lead
 - Learning approach: concepts, hands-on coding, exercises, assessments, code reviews and architecture discussions
 
 ## Roadmap
@@ -50,13 +50,11 @@ The project will evolve as each relevant topic is learned. Do not introduce tool
 
 | Day | Topic | Status | Assessment | Notes |
 |---|---|---|---|---|
-| 1 | Java foundations, JDK/JRE/JVM, IDE setup, first program | In progress | Pending | See [Day 1](day-01/README.md) |
-| 2 | Variables, data types, type casting and operators | Not started | Pending | |
+| 1 | Java foundations, JDK/JRE/JVM, IDE setup, first program | Completed | 5/5 (100%) in each of 2 attempts | Learner confirmed Day 1 complete; see [Day 1](day-01/README.md) |
+| 2 | Variables, data types, type casting and operators | Next | Not started | |
 | 3 | Conditional statements and loops | Not started | Pending | |
 | 4 | Methods and parameter passing | Not started | Pending | |
 | 5 | Arrays and strings | Not started | Pending | |
-
-Update this table only when the learner reports completed work or an assessment result. A lesson is not complete merely because notes were read.
 
 ## How progress is tracked
 For every study day:
@@ -73,6 +71,7 @@ Java/
   README.md
   day-01/
     README.md
+    setup-status.md
     exercises/
       README.md
   day-02/
