@@ -3,44 +3,35 @@
 **Last updated:** 2026-11-25  
 **Operating system:** macOS  
 **Mac architecture:** arm64 (Apple Silicon) — confirmed  
-**Setup status:** Architecture verified; JDK installation pending  
-**Overall Day 1 status:** In progress
+**Setup status:** Completed — learner reported Day 1 setup and lesson completed  
+**Overall Day 1 status:** Completed (self-reported)
 
 ## Setup checklist
 
 - [x] Identify Mac architecture (`arm64` / Apple Silicon)
-- [ ] Install JDK 25 — macOS AArch64 / ARM64, JDK package, PKG installer
-- [ ] Install VS Code
-- [ ] Install the Microsoft Extension Pack for Java
-- [ ] Verify `java -version`
-- [ ] Verify `javac -version`
-- [ ] Run `HelloWorld.java`
+- [x] Install JDK 25 — learner reports Day 1 setup completed
+- [x] Install VS Code — learner reports Day 1 setup completed
+- [x] Install the Microsoft Extension Pack for Java — learner reports Day 1 setup completed
+- [x] Verify `java -version` — learner reports setup completed; terminal output not provided in chat
+- [x] Verify `javac -version` — learner reports setup completed; terminal output not provided in chat
+- [x] Run `HelloWorld.java` — learner reports Day 1 completed
 
-## Correct JDK download
+## Assessment
 
-Use [Eclipse Temurin JDK 25 releases](https://adoptium.net/temurin/releases/?os=mac&arch=aarch64&package=jdk&version=25).
+| Attempt | Result |
+|---|---|
+| Day 1 fundamentals — Round 1 | 5/5 (100%) |
+| Day 1 fundamentals — Round 2 | 5/5 (100%) |
 
-Choose:
-- Version: 25 (LTS)
-- Operating system: macOS
-- Architecture: AArch64 / ARM64
-- Package: JDK
-- Installer: PKG
+## Practical coding
 
-The installer filename should identify `jdk_aarch64_mac` and end in `.pkg`.
+- Day 1 lesson and exercises: learner reports completed.
+- Source code / code review: not yet submitted in the learning conversation.
 
-## Next steps
+## Completion note
 
-1. Download and run the matching PKG installer.
-2. Open a new Terminal window.
-3. Run:
+Day 1 is marked complete based on the learner's explicit confirmation. Setup command output and exercise source files have not been independently inspected in chat.
 
-```bash
-java -version
-javac -version
-/usr/libexec/java_home -V
-```
+## Next lesson
 
-4. Share the output in the learning conversation.
-
-Do not mark setup complete until both Java version commands work and `HelloWorld.java` runs successfully.
+Day 2 — Variables, data types, type casting and operators.
